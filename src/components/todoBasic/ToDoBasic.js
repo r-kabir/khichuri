@@ -1,9 +1,6 @@
 import React from 'react'
 import { useState } from "react";
 
-
-
-
 const ToDoBasic = () => {
 
     let [mainArray, setMainArray] = useState([]);
