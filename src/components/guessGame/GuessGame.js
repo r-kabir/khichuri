@@ -16,7 +16,7 @@ const GuessGame = () => {
 
   return (
     <>
-      <div className="bg-lime-300 h-80 mx-8 text-center shadow-2xl my-8">
+      <div className="bg-orange-200 h-48 mx-16 text-center shadow-2xl my-10">
         <h1>Guess......Game........</h1>
         <input onChange={handleChange} value={playerOneInput}/>
         <MyButton onClick={handleClick}>Set Secret Number</MyButton>

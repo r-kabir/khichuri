@@ -18,7 +18,8 @@ const ToDoBasic = () => {
     }
   
     let handleClick = ()=> {
-      if (todoList){
+      const space = /\S/;
+      if (space.test(todoList)){
         mainArray.push(todoList);
         let hudaiArray = [...mainArray];
         setMainArray(hudaiArray);
@@ -62,37 +63,37 @@ const ToDoBasic = () => {
       setEditOption(false);
     }
 
-    let handleCancel =()=> {
-      setEditOption(false);
-      setTodoList("");
-      if (emptyError){
-        setEmptyError(false);
-      }
-    }
+    // let handleCancel = ()=> {
+    //   setEditOption(false);
+    //   setTodoList("");
+    //   if (emptyError){
+    //     setEmptyError(false);
+    //   }
+    // }
 
 
   return (
     <>
-      <div className="bg-rose-200 h-48 mx-8 text-center shadow-2xl my-5">
+      <div className="bg-rose-100 h-80 mx-auto max-w-2xl text-center shadow-xl my-10">
           <h2>To Do</h2>
-          <input onChange={handleChange} value={todoList}/>
+          <input onChange={handleChange} value={todoList} className='w-96 p-1 shadow-sm outline-rose-500' />
           {editOption ?
             <>
-              <button className="inline-flex justify-center rounded-md bg-red-600 px-4 py-2 mx-1
+              <button className="inline-flex justify-center rounded-md bg-red-600 px-3 py-1 mx-1
                 text-sm font-semibold text-white shadow-sm hover:bg-red-500" onClick={handleUpdate}>Update</button>
-              <button className="inline-flex justify-center rounded-md bg-red-600 px-4 py-2 mx-1
-                text-sm font-semibold text-white shadow-sm hover:bg-red-500" onClick={handleCancel}>Cancel</button>
+              <button className="inline-flex justify-center rounded-md bg-red-600 px-3 py-1 mx-1
+                text-sm font-semibold text-white shadow-sm hover:bg-red-500" onClick={()=>{setEditOption(false); setTodoList("")}}>Cancel</button>
             </>
            :
-            <button className="inline-flex justify-center rounded-md bg-red-600 px-4 py-2 mx-1
+            <button className="inline-flex justify-center rounded-md bg-red-600 px-3 py-1 mx-1
             text-sm font-semibold text-white shadow-sm hover:bg-red-500" onClick={handleClick}>Add to Your Wish List</button> 
           }
           {emptyError && <p>Please Write Something...</p>}
           <ul>{mainArray.map((item,index) => (
-              <li  className="my-2" key={index}>{item}-{index}
-              <button className="inline-flex justify-center rounded-md bg-red-600 px-4 py-2 mx-1
+              <li className='my-2 mx-auto p-1 bg-rose-50 w-96 text-end list-none shadow-md' key={index}>{item}-{index}
+              <button className="inline-flex justify-center rounded-md bg-red-600 px-3 py-1 mx-1
                 text-sm font-semibold text-white shadow-sm hover:bg-red-500" onClick={()=>handleDelete(index)}>Delete</button>
-              <button className="inline-flex justify-center rounded-md bg-red-600 px-4 py-2 mx-1
+              <button className="inline-flex justify-center rounded-md bg-red-600 px-3 py-1 mx-1
                 text-sm font-semibold text-white shadow-sm hover:bg-red-500" onClick={()=>handleEdit(item, index)}>Edit</button>
               </li>
           ))}
