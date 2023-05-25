@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { getDatabase, ref, set, push, onValue, remove } from "firebase/database";
+import { getDatabase, ref, set, push, onValue, remove, update } from "firebase/database";
 
 const ToDoFirebaseRealTime = () => {
 
@@ -10,6 +10,7 @@ const ToDoFirebaseRealTime = () => {
   let [fakaError, setFakaError] = useState(false);
   let [successMessage, setSuccessMessage] = useState(false);
   let [editOption, setEditOption] = useState(false);
+  let [editId, setEditId] = useState("");
 
   // let handleChange = (e)=> {
   //   let hudaiList = e.target.value;
@@ -53,21 +54,42 @@ const ToDoFirebaseRealTime = () => {
     });
 
   },[])
-
+  //>>>>>>>>>>>>>>>>> Delete Data >>>>>>>>>>>>>>>>>>//
   let handleDelete = (id)=> {
     remove(ref(todoDB, 'lists/' + id)).then(()=> {
       console.log('delete hoise')
-    })
-
+    });
+    fakaError && setFakaError(false);
+    successMessage && setSuccessMessage(false);
+    editOption && setEditOption(false);
+    editOption && setTaskList("");
+    // setTaskList("");
+    // editOption && setTaskList("");
   }
-
-  let handleEdit = ()=> {
+  //>>>>>>>>>>>>>>>>> Update/EditData >>>>>>>>>>>>>>>>>>//
+  let handleEdit = (item, id)=> {
     setEditOption(true);
-    console.log('edit hoise');
+    setTaskList(item);
+    setEditId(id);
+    fakaError && setFakaError(false);
+    successMessage && setSuccessMessage(false);
+    // console.log(id);
   }
 
   let handleUpdate = ()=> {
-    console.log('update hoise');
+    // console.log(editId);
+    const space = /\S/;
+    if (space.test(taskList)) {
+      update(ref(todoDB, 'lists/' + editId), {listItem:taskList}).then(()=>{
+        console.log('update hoise');
+      });
+      setEditOption(false);
+      setTaskList("");
+      fakaError && setEditOption(false);
+    }else{
+      setFakaError(true);
+      // fakaError && setEditOption(false);
+    }
   }
 
   return (
@@ -87,7 +109,7 @@ const ToDoFirebaseRealTime = () => {
           {successMessage && <h3>Done......!!!!!</h3>}
           {mainArray.map((item, index) => (
           <li key={index} className='my-2 mx-auto p-1 bg-teal-100 w-96 text-end list-none shadow-md'>{item.listItem} --{item.id}
-            <button onClick={handleEdit} className='border border-solid mx-1 bg-teal-500 border-teal-800 text-white px-2 rounded-sm'>Edit</button>
+            <button onClick={()=>handleEdit(item.listItem, item.id)} className='border border-solid mx-1 bg-teal-500 border-teal-800 text-white px-2 rounded-sm'>Edit</button>
             <button onClick={()=>handleDelete(item.id)} className='border border-solid mx-1 bg-rose-500 border-rose-800 text-white px-2 rounded-sm'>Delete</button>
           </li>
           ))}
